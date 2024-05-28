@@ -1,0 +1,26 @@
+{
+  "name": "unofficial-wanikani",
+  "version": "0.0.1",
+  "description": "An unofficial JavaScript client for the WaniKani API.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist && tsc && terser dist/index.js -o dist/index.min.js"
+  },
+  "keywords": [
+    "wanikani",
+    "api",
+    "typescript",
+    "client"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4",
+    "rimraf": "^3.0.2",
+    "terser": "^5.7.1"
+  }
+}

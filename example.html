@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WaniKani Data Fetcher</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #333;
+      }
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+      }
+      h1 {
+        font-size: 24px;
+        color: #2c3e50;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      input[type="text"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: calc(100% - 22px);
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #1abc9c;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #16a085;
+      }
+      h2 {
+        font-size: 20px;
+        color: #2c3e50;
+        margin-top: 20px;
+      }
+      .loading {
+        font-style: italic;
+        color: grey;
+      }
+      .error {
+        color: red;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background-color: #ecf0f1;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>WaniKani Data Fetcher</h1>
+      <form id="api-key-form">
+        <label>
+          API Key:
+          <input type="text" id="api-key-input" required />
+        </label>
+        <button type="submit">Fetch Data</button>
+      </form>
+
+      <h2>Assignments</h2>
+      <div id="assignments-loading" class="loading">
+        Enter API key and click "Fetch Data" to load assignments...
+      </div>
+      <ul id="assignments-list"></ul>
+
+      <h2>Level Progressions</h2>
+      <div id="level-progressions-loading" class="loading">
+        Enter API key and click "Fetch Data" to load level progressions...
+      </div>
+      <ul id="level-progressions-list"></ul>
+
+      <h2>Reviews</h2>
+      <div id="reviews-loading" class="loading">
+        Enter API key and click "Fetch Data" to load reviews...
+      </div>
+      <ul id="reviews-list"></ul>
+
+      <h2>Subjects</h2>
+      <div id="subjects-loading" class="loading">
+        Enter API key and click "Fetch Data" to load subjects...
+      </div>
+      <ul id="subjects-list"></ul>
+    </div>
+
+    <script type="module">
+      import WaniKani from "./dist/index.min.js";
+
+      const fetchAssignments = async (client) => {
+        document.getElementById("assignments-loading").textContent =
+          "Loading assignments...";
+        try {
+          const assignments = await client.fetchAssignments();
+          const assignmentsList = document.getElementById("assignments-list");
+          assignmentsList.innerHTML = "";
+          assignments.data.forEach((assignment) => {
+            const li = document.createElement("li");
+            li.textContent = `Subject ID: ${assignment.subject_id}, SRS Stage: ${assignment.srs_stage}`;
+            assignmentsList.appendChild(li);
+          });
+          document.getElementById("assignments-loading").textContent = "";
+        } catch (error) {
+          document.getElementById("assignments-loading").textContent =
+            "Error loading assignments";
+          console.error(error);
+        }
+      };
+
+      const fetchLevelProgressions = async (client) => {
+        document.getElementById("level-progressions-loading").textContent =
+          "Loading level progressions...";
+        try {
+          const progressions = await client.fetchLevelProgressions();
+          const progressionsList = document.getElementById(
+            "level-progressions-list"
+          );
+          progressionsList.innerHTML = "";
+          progressions.data.forEach((progression) => {
+            const li = document.createElement("li");
+            li.textContent = `Level: ${progression.level}`;
+            progressionsList.appendChild(li);
+          });
+          document.getElementById("level-progressions-loading").textContent =
+            "";
+        } catch (error) {
+          document.getElementById("level-progressions-loading").textContent =
+            "Error loading level progressions";
+          console.error(error);
+        }
+      };
+
+      const fetchReviews = async (client) => {
+        document.getElementById("reviews-loading").textContent =
+          "Loading reviews...";
+        try {
+          const reviews = await client.fetchReviews();
+          const reviewsList = document.getElementById("reviews-list");
+          reviewsList.innerHTML = "";
+          reviews.data.forEach((review) => {
+            const li = document.createElement("li");
+            li.textContent = `Subject ID: ${review.subject_id}, Starting SRS Stage: ${review.starting_srs_stage}, Ending SRS Stage: ${review.ending_srs_stage}`;
+            reviewsList.appendChild(li);
+          });
+          document.getElementById("reviews-loading").textContent = "";
+        } catch (error) {
+          document.getElementById("reviews-loading").textContent =
+            "Error loading reviews";
+          console.error(error);
+        }
+      };
+
+      const fetchSubjects = async (client) => {
+        document.getElementById("subjects-loading").textContent =
+          "Loading subjects...";
+        try {
+          const subjects = await client.fetchSubjects();
+          const subjectsList = document.getElementById("subjects-list");
+          subjectsList.innerHTML = "";
+          subjects.data.forEach((subject) => {
+            const li = document.createElement("li");
+            li.textContent = `Subject: ${subject.slug}, Level: ${subject.level}`;
+            subjectsList.appendChild(li);
+          });
+          document.getElementById("subjects-loading").textContent = "";
+        } catch (error) {
+          document.getElementById("subjects-loading").textContent =
+            "Error loading subjects";
+          console.error(error);
+        }
+      };
+
+      document
+        .getElementById("api-key-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const apiKey = document.getElementById("api-key-input").value;
+          const client = WaniKani(apiKey);
+
+          await fetchAssignments(client);
+          await fetchLevelProgressions(client);
+          await fetchReviews(client);
+          await fetchSubjects(client);
+        });
+    </script>
+  </body>
+</html>
