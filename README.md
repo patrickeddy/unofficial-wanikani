@@ -38,4 +38,4 @@ const assignments = await fetchAssignments(apiKey, {
 
 ## Projects Using `unofficial-wanikani`
 
-- [WaniKani Wallpaper](https://patrickeddy.github.io/wanikani-wallpaper)
+- [WaniKani Wallpaper](https://github.com/patrickeddy/wanikani-wallpaper)
