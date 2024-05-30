@@ -11,7 +11,6 @@ import {
   Subject,
   SubjectsParams,
   WaniKaniCollection,
-  WaniKaniResource,
 } from "./types";
 
 // request util functions
@@ -113,11 +112,7 @@ export const fetchAssignments = (
  * @returns A promise that resolves to a WaniKaniResource of an Assignment.
  */
 export const fetchAssignment = (apiKey: string, id: number, options?: {}) =>
-  fetchResource<WaniKaniResource<Assignment>>(
-    apiKey,
-    `assignments/${id}`,
-    options
-  );
+  fetchResource<Assignment>(apiKey, `assignments/${id}`, options);
 
 /**
  * Updates a specific assignment in the WaniKani API.
@@ -131,13 +126,8 @@ export const fetchAssignment = (apiKey: string, id: number, options?: {}) =>
 export const updateAssignment = (
   apiKey: string,
   id: number,
-  data: Partial<Assignment>
-) =>
-  updateResource<WaniKaniResource<Assignment>>(
-    apiKey,
-    `assignments/${id}`,
-    data
-  );
+  data: Partial<Pick<Assignment, "data">>
+) => updateResource<Assignment>(apiKey, `assignments/${id}`, data);
 
 /**
  * Fetches a collection of level progressions from the WaniKani API.
@@ -169,11 +159,7 @@ export const fetchLevelProgression = (
   id: number,
   options?: {}
 ) =>
-  fetchResource<WaniKaniResource<LevelProgression>>(
-    apiKey,
-    `level_progressions/${id}`,
-    options
-  );
+  fetchResource<LevelProgression>(apiKey, `level_progressions/${id}`, options);
 
 /**
  * Fetches a collection of reviews from the WaniKani API.
@@ -196,7 +182,7 @@ export const fetchReviews = (
  * @returns A promise that resolves to a WaniKaniResource of a Review.
  */
 export const fetchReview = (apiKey: string, id: number, options?: {}) =>
-  fetchResource<WaniKaniResource<Review>>(apiKey, `reviews/${id}`, options);
+  fetchResource<Review>(apiKey, `reviews/${id}`, options);
 
 /**
  * Creates a new review in the WaniKani API.
@@ -206,7 +192,7 @@ export const fetchReview = (apiKey: string, id: number, options?: {}) =>
  * @returns A promise that resolves to a WaniKaniResource of a Review.
  */
 export const createReview = (apiKey: string, data: CreateReviewData) =>
-  createResource<WaniKaniResource<Review>>(apiKey, "reviews", data);
+  createResource<Review>(apiKey, "reviews", data);
 
 /**
  * Fetches a collection of subjects from the WaniKani API.
@@ -229,7 +215,7 @@ export const fetchSubjects = (
  * @returns A promise that resolves to a WaniKaniResource of a Subject.
  */
 export const fetchSubject = (apiKey: string, id: number, options?: {}) =>
-  fetchResource<WaniKaniResource<Subject>>(apiKey, `subjects/${id}`, options);
+  fetchResource<Subject>(apiKey, `subjects/${id}`, options);
 
 /**
  * Creates a WaniKani client instance.
@@ -265,7 +251,7 @@ export default function WaniKani(apiKey: string) {
      * @param data - The data to update.
      * @returns A promise that resolves to a WaniKaniResource of an Assignment.
      */
-    updateAssignment: (id: number, data: Partial<Assignment>) =>
+    updateAssignment: (id: number, data: Partial<Pick<Assignment, "data">>) =>
       updateAssignment(apiKey, id, data),
 
     /**
