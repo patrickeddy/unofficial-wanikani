@@ -1,11 +1,12 @@
-export interface WaniKaniResource {
-  id: string;
+export interface WaniKaniResource<T> {
+  id: number;
   object: string;
   url: string;
   data_updated_at: string;
+  data: T;
 }
 
-export interface WaniKaniCollection<T extends WaniKaniResource> {
+export interface WaniKaniCollection<T> {
   id: number;
   object: string;
   url: string;
@@ -19,69 +20,61 @@ export interface WaniKaniCollection<T extends WaniKaniResource> {
   data: T[];
 }
 
-export interface Assignment extends WaniKaniResource {
-  data: {
-    created_at: string;
-    subject_id: number;
-    subject_type: string;
-    srs_stage: number;
-    srs_stage_name: string;
-    unlocked_at: string;
-    started_at: string | null;
-    passed_at: string | null;
-    burned_at: string | null;
-    available_at: string;
-    resurrected_at: string | null;
-    passed: boolean;
-    resurrected: boolean;
-    hidden: boolean;
-  };
-}
+export type Assignment = WaniKaniResource<{
+  created_at: string;
+  subject_id: number;
+  subject_type: string;
+  srs_stage: number;
+  srs_stage_name: string;
+  unlocked_at: string;
+  started_at: string | null;
+  passed_at: string | null;
+  burned_at: string | null;
+  available_at: string;
+  resurrected_at: string | null;
+  passed: boolean;
+  resurrected: boolean;
+  hidden: boolean;
+}>;
 
-export interface LevelProgression extends WaniKaniResource {
-  data: {
-    created_at: string;
-    level: number;
-    unlocked_at: string;
-    started_at: string | null;
-    passed_at: string | null;
-    completed_at: string | null;
-    abandoned_at: string | null;
-  };
-}
+export type LevelProgression = WaniKaniResource<{
+  created_at: string;
+  level: number;
+  unlocked_at: string;
+  started_at: string | null;
+  passed_at: string | null;
+  completed_at: string | null;
+  abandoned_at: string | null;
+}>;
 
-export interface Review extends WaniKaniResource {
-  data: {
-    created_at: string;
-    assignment_id: number;
-    subject_id: number;
-    starting_srs_stage: number;
-    ending_srs_stage: number;
-    incorrect_meaning_answers: number;
-    incorrect_reading_answers: number;
-  };
-}
+export type Review = WaniKaniResource<{
+  created_at: string;
+  assignment_id: number;
+  subject_id: number;
+  starting_srs_stage: number;
+  ending_srs_stage: number;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
+}>;
 
-export interface Subject extends WaniKaniResource {
-  data: {
-    created_at: string;
-    level: number;
-    slug: string;
-    hidden_at: string | null;
-    document_url: string;
-    characters: string | null;
-    meanings: Array<{
-      meaning: string;
-      primary: boolean;
-      accepted_answer: boolean;
-    }>;
-    auxiliary_meanings: Array<{ type: string; text: string }>;
-    readings: Array<{ type: string; primary: boolean; reading: string }>;
-    parts_of_speech: string[];
-    component_subject_ids: number[];
-    amalgamation_subject_ids: number[];
-  };
-}
+export type Subject = WaniKaniResource<{
+  created_at: string;
+  level: number;
+  slug: string;
+  hidden_at: string | null;
+  document_url: string;
+  characters: string | null;
+  meanings: Array<{
+    meaning: string;
+    primary: boolean;
+    accepted_answer: boolean;
+  }>;
+  auxiliary_meanings: Array<{ type: string; text: string }>;
+  readings: Array<{ type: string; primary: boolean; reading: string }>;
+  parts_of_speech: string[];
+  component_subject_ids: number[];
+  amalgamation_subject_ids: number[];
+}>;
 
 export interface RequestOptions {
   endpoint: string;
