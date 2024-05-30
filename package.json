@@ -1,9 +1,9 @@
 {
   "name": "unofficial-wanikani",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An unofficial JavaScript client for the WaniKani API.",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "directories": {
     "lib": "src"
   },
