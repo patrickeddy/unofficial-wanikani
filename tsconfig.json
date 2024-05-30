@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "ES6",
-    "jsx": "react",
+    "module": "UMD",
     "declaration": true,
     "outDir": "./dist",
     "strict": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
