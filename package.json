@@ -1,6 +1,6 @@
 {
   "name": "unofficial-wanikani",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An unofficial JavaScript client for the WaniKani API.",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
