@@ -2,10 +2,18 @@
   "name": "unofficial-wanikani",
   "version": "0.0.1",
   "description": "An unofficial JavaScript client for the WaniKani API.",
-  "main": "dist/index.js",
+  "main": "dist/index.min.js",
   "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "src"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "build": "rimraf dist && tsc && terser dist/index.js -o dist/index.min.js"
+    "build": "rimraf dist && tsc",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "wanikani",
@@ -13,14 +21,13 @@
     "typescript",
     "client"
   ],
-  "author": "Your Name",
+  "author": "Patrick Eddy",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
   },
   "devDependencies": {
     "typescript": "^4.5.4",
-    "rimraf": "^3.0.2",
-    "terser": "^5.7.1"
+    "rimraf": "^3.0.2"
   }
 }

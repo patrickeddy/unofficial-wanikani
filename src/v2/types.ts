@@ -1,5 +1,4 @@
-// api data types
-
+// types.ts
 export interface Assignment {
   created_at: string;
   subject_id: number;
@@ -29,8 +28,8 @@ export interface LevelProgression {
 
 export interface Review {
   created_at: string;
+  assignment_id: number;
   subject_id: number;
-  subject_type: string;
   starting_srs_stage: number;
   ending_srs_stage: number;
   incorrect_meaning_answers: number;
@@ -43,7 +42,7 @@ export interface Subject {
   slug: string;
   hidden_at: string | null;
   document_url: string;
-  characters: string;
+  characters: string | null;
   meanings: Array<{
     meaning: string;
     primary: boolean;
@@ -55,8 +54,6 @@ export interface Subject {
   component_subject_ids: number[];
   amalgamation_subject_ids: number[];
 }
-
-// api responses
 
 type WaniKaniDataType = Assignment | LevelProgression | Review | Subject;
 
@@ -82,4 +79,66 @@ export interface WaniKaniResource<T extends WaniKaniDataType>
 export interface WaniKaniCollection<T extends WaniKaniDataType>
   extends WaniKaniResourceResponse<T> {
   data: T[];
+}
+
+export interface RequestOptions {
+  endpoint: string;
+  method?: string;
+  data?: any;
+  apiKey: string;
+  version?: string;
+}
+
+export interface ErrorResponse {
+  code: number;
+  error: string;
+}
+
+export interface PaginationParams {
+  page_after_id?: string;
+  page_before_id?: string;
+  page_after?: string;
+  page_before?: string;
+  per_page?: string;
+}
+
+export interface AssignmentsParams extends PaginationParams {
+  available_after?: string;
+  available_before?: string;
+  burned?: boolean;
+  hidden?: boolean;
+  ids?: string;
+  immediately_available_for_lessons?: boolean;
+  immediately_available_for_review?: boolean;
+  in_review?: boolean;
+  levels?: string;
+  resource_types?: string;
+  srs_stages?: string;
+  started?: boolean;
+  subject_ids?: string;
+  unlocked?: boolean;
+}
+
+export interface ReviewsParams extends PaginationParams {
+  assignment_ids?: string;
+  ids?: string;
+  subject_ids?: string;
+  subject_types?: string;
+  updated_after?: string;
+}
+
+export interface SubjectsParams extends PaginationParams {
+  hidden?: boolean;
+  ids?: string;
+  levels?: string;
+  slugs?: string;
+  types?: string;
+  updated_after?: string;
+}
+
+export interface CreateReviewData {
+  created_at?: string;
+  assignment_id: number;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
 }

@@ -1,149 +1,313 @@
-# unofficial-wanikani
+# The (Unofficial) WaniKani Client
 
-The (Unofficial) WaniKani Client
-
-This package provides a set of utility functions and a client factory to interact with the WaniKani API. It includes support for fetching various resources such as assignments, level progressions, reviews, and subjects.
+This package provides a client for interacting with the WaniKani API. It supports fetching and updating assignments, reviews, and subjects, as well as creating reviews.
 
 ## Installation
 
-To install the package, run:
-
-```sh
+```bash
 npm install unofficial-wanikani
 ```
 
 ## Usage
 
-### Client Factory
-
-The client factory function allows you to create a WaniKani client instance with [your API key](https://www.wanikani.com/settings/personal_access_tokens). This client instance provides methods to fetch various resources from the WaniKani API.
+### Importing the Client
 
 ```typescript
 import WaniKani from "unofficial-wanikani";
+```
 
-const apiKey = "your-api-key";
-const wanikani = WaniKani(apiKey);
+### Creating a Client Instance
 
-// Fetch assignments with optional pagination parameters
-wanikani
-  .fetchAssignments({ params: { per_page: "100" } })
-  .then((assignments) => {
-    console.log(assignments);
-  });
+```typescript
+const client = WaniKani("your_wanikani_api_key");
+```
 
-// Fetch a specific assignment by ID
-wanikani.fetchAssignment(12345).then((assignment) => {
-  console.log(assignment);
-});
+### Fetching Data with Client Instance
 
-// Fetch level progressions
-wanikani.fetchLevelProgressions().then((progressions) => {
-  console.log(progressions);
-});
+#### Fetching Assignments
 
-// Fetch a specific level progression by ID
-wanikani.fetchLevelProgression(67890).then((progression) => {
-  console.log(progression);
-});
-
-// Fetch reviews
-wanikani.fetchReviews().then((reviews) => {
-  console.log(reviews);
-});
-
-// Fetch a specific review by ID
-wanikani.fetchReview(112233).then((review) => {
-  console.log(review);
-});
-
-// Fetch subjects
-wanikani.fetchSubjects().then((subjects) => {
-  console.log(subjects);
-});
-
-// Fetch a specific subject by ID
-wanikani.fetchSubject(445566).then((subject) => {
-  console.log(subject);
+```typescript
+const assignments = await client.fetchAssignments({
+  params: { immediately_available_for_lessons: true },
 });
 ```
 
-### Pure Exported Functions
-
-If you prefer not to use the client factory, you can directly use the exported functions. Each function requires the API key as the first argument.
+#### Fetching a Specific Assignment
 
 ```typescript
-import {
-  fetchAssignments,
-  fetchAssignment,
-  fetchLevelProgressions,
-  fetchLevelProgression,
-  fetchReviews,
-  fetchReview,
-  fetchSubjects,
-  fetchSubject,
-} from "unofficial-wanikani";
+const assignment = await client.fetchAssignment(12345);
+```
 
-const apiKey = "your-api-key";
+#### Fetching Level Progressions
 
-// Fetch assignments with optional pagination parameters
-fetchAssignments(apiKey, { params: { per_page: "100" } }).then(
-  (assignments) => {
-    console.log(assignments);
-  }
+```typescript
+const levelProgressions = await client.fetchLevelProgressions();
+```
+
+#### Fetching a Specific Level Progression
+
+```typescript
+const levelProgression = await client.fetchLevelProgression(67890);
+```
+
+#### Fetching Reviews
+
+```typescript
+const reviews = await client.fetchReviews({
+  params: { assignment_ids: "12345,67890" },
+});
+```
+
+#### Fetching a Specific Review
+
+```typescript
+const review = await client.fetchReview(111213);
+```
+
+#### Creating a Review
+
+```typescript
+const newReview = await client.createReview({
+  assignment_id: 12345,
+  incorrect_meaning_answers: 1,
+  incorrect_reading_answers: 0,
+});
+```
+
+#### Fetching Subjects
+
+```typescript
+const subjects = await client.fetchSubjects({ params: { ids: "12345,67890" } });
+```
+
+#### Fetching a Specific Subject
+
+```typescript
+const subject = await client.fetchSubject(12345);
+```
+
+### Fetching Data with Raw Functions
+
+If you prefer to use the raw functions without creating a client instance, you can do so as follows:
+
+#### Fetching Assignments
+
+```typescript
+import { fetchAssignments } from "unofficial-wanikani";
+
+const assignments = await fetchAssignments("your_wanikani_api_key", {
+  params: { immediately_available_for_lessons: true },
+});
+```
+
+#### Fetching a Specific Assignment
+
+```typescript
+import { fetchAssignment } from "unofficial-wanikani";
+
+const assignment = await fetchAssignment("your_wanikani_api_key", 12345);
+```
+
+#### Fetching Level Progressions
+
+```typescript
+import { fetchLevelProgressions } from "unofficial-wanikani";
+
+const levelProgressions = await fetchLevelProgressions("your_wanikani_api_key");
+```
+
+#### Fetching a Specific Level Progression
+
+```typescript
+import { fetchLevelProgression } from "unofficial-wanikani";
+
+const levelProgression = await fetchLevelProgression(
+  "your_wanikani_api_key",
+  67890
 );
-
-// Fetch a specific assignment by ID
-fetchAssignment(apiKey, 12345).then((assignment) => {
-  console.log(assignment);
-});
-
-// Fetch level progressions
-fetchLevelProgressions(apiKey).then((progressions) => {
-  console.log(progressions);
-});
-
-// Fetch a specific level progression by ID
-fetchLevelProgression(apiKey, 67890).then((progression) => {
-  console.log(progression);
-});
-
-// Fetch reviews
-fetchReviews(apiKey).then((reviews) => {
-  console.log(reviews);
-});
-
-// Fetch a specific review by ID
-fetchReview(apiKey, 112233).then((review) => {
-  console.log(review);
-});
-
-// Fetch subjects
-fetchSubjects(apiKey).then((subjects) => {
-  console.log(subjects);
-});
-
-// Fetch a specific subject by ID
-fetchSubject(apiKey, 445566).then((subject) => {
-  console.log(subject);
-});
 ```
 
-### Pagination Support
-
-The fetch functions for collections support optional pagination parameters. You can pass these parameters to control the number of items returned and navigate through the results.
-
-### Error Handling
-
-The functions will throw an error if the API request fails. Ensure you handle errors appropriately in your application.
+#### Fetching Reviews
 
 ```typescript
-fetchAssignments(apiKey, { params: { per_page: "100" } })
-  .then((assignments) => {
-    console.log(assignments);
-  })
-  .catch((error) => {
-    console.error("Error fetching assignments:", error);
-  });
+import { fetchReviews } from "unofficial-wanikani";
+
+const reviews = await fetchReviews("your_wanikani_api_key", {
+  params: { assignment_ids: "12345,67890" },
+});
 ```
 
-If you encounter any issues or have further questions, please refer to the [WaniKani API documentation](https://docs.api.wanikani.com/20170710/) or create an issue.
+#### Fetching a Specific Review
+
+```typescript
+import { fetchReview } from "unofficial-wanikani";
+
+const review = await fetchReview("your_wanikani_api_key", 111213);
+```
+
+#### Creating a Review
+
+```typescript
+import { createReview } from "unofficial-wanikani";
+
+const newReview = await createReview("your_wanikani_api_key", {
+  assignment_id: 12345,
+  incorrect_meaning_answers: 1,
+  incorrect_reading_answers: 0,
+});
+```
+
+#### Fetching Subjects
+
+```typescript
+import { fetchSubjects } from "unofficial-wanikani";
+
+const subjects = await fetchSubjects("your_wanikani_api_key", {
+  params: { ids: "12345,67890" },
+});
+```
+
+#### Fetching a Specific Subject
+
+```typescript
+import { fetchSubject } from "unofficial-wanikani";
+
+const subject = await fetchSubject("your_wanikani_api_key", 12345);
+```
+
+### Client Functions
+
+The client instance provides the following functions:
+
+- `fetchAssignments(options?: { params?: AssignmentsParams })`: Fetches a collection of assignments.
+- `fetchAssignment(id: number)`: Fetches a specific assignment.
+- `updateAssignment(id: number, data: Assignment)`: Updates a specific assignment.
+- `fetchLevelProgressions(options?: { params?: PaginationParams })`: Fetches a collection of level progressions.
+- `fetchLevelProgression(id: number)`: Fetches a specific level progression.
+- `fetchReviews(options?: { params?: ReviewsParams })`: Fetches a collection of reviews.
+- `fetchReview(id: number)`: Fetches a specific review.
+- `createReview(data: CreateReviewData)`: Creates a new review.
+- `fetchSubjects(options?: { params?: SubjectsParams })`: Fetches a collection of subjects.
+- `fetchSubject(id: number)`: Fetches a specific subject.
+
+### Types
+
+#### `Assignment`
+
+```typescript
+export interface Assignment {
+  created_at: string;
+  subject_id: number;
+  subject_type: string;
+  srs_stage: number;
+  srs_stage_name: string;
+  unlocked_at: string;
+  started_at: string | null;
+  passed_at: string | null;
+  burned_at: string | null;
+  available_at: string;
+  resurrected_at: string | null;
+  passed: boolean;
+  resurrected: boolean;
+  hidden: boolean;
+}
+```
+
+#### `LevelProgression`
+
+```typescript
+export interface LevelProgression {
+  created_at: string;
+  level: number;
+  unlocked_at: string;
+  started_at: string | null;
+  passed_at: string | null;
+  completed_at: string | null;
+  abandoned_at: string | null;
+}
+```
+
+#### `Review`
+
+```typescript
+export interface Review {
+  created_at: string;
+  subject_id: number;
+  subject_type: string;
+  starting_srs_stage: number;
+  ending_srs_stage: number;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
+}
+```
+
+#### `Subject`
+
+```typescript
+export interface Subject {
+  created_at: string;
+  level: number;
+  slug: string;
+  hidden_at: string | null;
+  document_url: string;
+  characters: string;
+  meanings: Array<{
+    meaning: string;
+    primary: boolean;
+    accepted_answer: boolean;
+  }>;
+  auxiliary_meanings: Array<{ type: string; text: string }>;
+  readings: Array<{ type: string; primary: boolean; reading: string }>;
+  parts_of_speech: string[];
+  component_subject_ids: number[];
+  amalgamation_subject_ids: number[];
+}
+```
+
+#### `WaniKaniResource`
+
+```typescript
+export interface WaniKaniResource<T> {
+  id: number;
+  object: string;
+  url: string;
+  data_updated_at: string;
+  data: T;
+}
+```
+
+#### `WaniKaniCollection`
+
+```typescript
+export interface WaniKaniCollection<T> {
+  object: string;
+  url: string;
+  pages: {
+    per_page: number;
+    next_url: string | null;
+    previous_url: string | null;
+  };
+  total_count: number;
+  data_updated_at: string;
+  data: T[];
+}
+```
+
+#### `CreateReviewData`
+
+```typescript
+export interface CreateReviewData {
+  created_at?: string;
+  assignment_id: number;
+  incorrect_meaning_answers: number;
+  incorrect_reading_answers: number;
+}
+```
+
+## Example Project
+
+An example project demonstrating how to use this client can be found [here](https://patrickeddy.github.io/unofficial-wanikani).
+
+## License
+
+This project is licensed under the MIT License.
