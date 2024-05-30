@@ -8,6 +8,10 @@ This package provides a client for interacting with the WaniKani API. It support
 npm install unofficial-wanikani
 ```
 
+## Projects For Examples & Inspiration
+
+- [WaniKani Wallpaper](https://patrickeddy.github.io/wanikani-wallpaper)
+
 ## Usage
 
 ### Importing the Client
@@ -303,10 +307,6 @@ export interface CreateReviewData {
   incorrect_reading_answers: number;
 }
 ```
-
-## Example Project
-
-An example project demonstrating how to use this client can be found [here](https://patrickeddy.github.io/unofficial-wanikani).
 
 ## License
 
