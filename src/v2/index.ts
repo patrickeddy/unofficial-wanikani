@@ -12,6 +12,7 @@ import {
   SubjectsParams,
   WaniKaniCollection,
 } from "./types";
+import fetch from 'cross-fetch';
 
 // request util functions
 
