@@ -1,10 +1,17 @@
 {
   "name": "unofficial-wanikani",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "An unofficial JavaScript client for the WaniKani API.",
-  "main": "dist/index.js",
-  "module": "dist/es/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/unofficial-wanikani.umd.cjs",
+  "module": "./dist/unofficial-wanikani.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/unofficial-wanikani.js",
+      "require": "./dist/unofficial-wanikani.umd.cjs"
+    }
+  },
   "directories": {
     "lib": "src"
   },
@@ -13,7 +20,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rimraf dist && tsc && tsc -p tsconfig.es.json",
+    "dev": "vite",
+    "build": "vite build",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -28,7 +36,12 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
+    "@types/node": "^18.0.0",
     "typescript": "^4.5.4",
-    "rimraf": "^3.0.2"
+    "vite": "^6.3.3",
+    "vite-plugin-dts": "^4.5.3"
+  },
+  "dependencies": {
+    "cross-fetch": "^4.1.0"
   }
 }

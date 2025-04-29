@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "UMD",
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true
+    "module": "ESNext", // Changed from UMD
+    "strict": true,
+    "moduleResolution": "node", // Or "bundler" if preferred
+    "isolatedModules": true, // Recommended for Vite/esbuild
+    "esModuleInterop": true, // Often helpful
+    "skipLibCheck": true, // Can speed up checks
+    "noEmit": true // Vite handles emission, tsc only for types if needed separately
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "vite.config.ts"] // Include Vite config
 }
